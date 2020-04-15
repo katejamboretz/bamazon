@@ -16,6 +16,9 @@ var connection = mysql.createConnection({
 
 connection.connect(function (err) {
   if (err) throw err;
+  console.log(
+    "\n WELCOME TO THE BAMAZON APP!\n\n * Press CTRL-C at any time to exit the app *"
+  );
   display();
   // what();
   // howMuch();
@@ -93,28 +96,34 @@ function howMuch(identifier) {
           if (err) throw err;
           var cost = number * res[0].price;
           var difference = res[0].stock_quantity - number;
-          console.log(difference);
-          console.log("That will be $" + cost + ".");
-          // Still need to update database, but getting 'argument callback must be funcion when provided' error
-          //   update(difference, identifier);
-          connection.end();
+          if (difference >= 0) {
+            // console.log(difference);
+            console.log("\n\nThat will be $" + cost + ".");
+            // Still need to update database, but getting 'argument callback must be funcion when provided' error
+            updater(difference, identifier);
+          }
+          if (difference < 0) {
+            console.log("\n\n Insufficient quantity!\n\n");
+            howMuch(identifier);
+          }
+          // connection.end();
         }
       );
     });
 }
 
-// function update(diff, ident) {
-//   var query = connection.query(
-//     "UPDATE products SET stock_quantity = ? WHERE id = ?",
-//     diff,
-//     ident,
-//     function (err, res) {
-//       if (err) throw err;
-//       console.log(query.sql);
-//       console.log("\n\n Table updated after purchase. \n\n");
-//       console.table(res);
-//       connection.end();
-//     }
-//   );
-//   console.log(query.sql);
-// }
+function updater(diff, ident) {
+  var query = connection.query(
+    "UPDATE products SET stock_quantity = ? WHERE id = ?",
+    [diff, ident],
+    function (err, res) {
+      if (err) throw err;
+      // console.log(query.sql);
+      console.log("\n\n Table updated after purchase.");
+      display();
+      // console.table(res);
+      // connection.end();
+    }
+  );
+  // console.log(query.sql);
+}
