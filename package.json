@@ -1,0 +1,22 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "bamazon mysql database",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katejamboretz/bamazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katejamboretz/bamazon/issues"
+  },
+  "homepage": "https://github.com/katejamboretz/bamazon#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
