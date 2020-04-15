@@ -86,18 +86,35 @@ function howMuch(identifier) {
       var number = answer.amount;
 
       // Determine cost
-      var query1 = connection.query(
+      var query = connection.query(
         "SELECT * FROM products WHERE ?",
         { id: identifier },
         function (err, res) {
           if (err) throw err;
           var cost = number * res[0].price;
+          var difference = res[0].stock_quantity - number;
+          console.log(difference);
           console.log("That will be $" + cost + ".");
+          // Still need to update database, but getting 'argument callback must be funcion when provided' error
+          //   update(difference, identifier);
+          connection.end();
         }
       );
-
-      connection.end();
-      // Subtract from total number
-      // var query2 = connection.query("SUBTRACT")
     });
 }
+
+// function update(diff, ident) {
+//   var query = connection.query(
+//     "UPDATE products SET stock_quantity = ? WHERE id = ?",
+//     diff,
+//     ident,
+//     function (err, res) {
+//       if (err) throw err;
+//       console.log(query.sql);
+//       console.log("\n\n Table updated after purchase. \n\n");
+//       console.table(res);
+//       connection.end();
+//     }
+//   );
+//   console.log(query.sql);
+// }
